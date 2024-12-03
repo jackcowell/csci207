@@ -247,6 +247,8 @@ int main()
     gameMap.push_back(island);
     gameMap.push_back(hut);
     gameMap.push_back(quicksand);
+    gameMap.push_back(cave);
+    gameMap.push_back(beach);
     gameMap.push_back(village);
     gameMap.push_back(chasm);
     gameMap.push_back(tower);
