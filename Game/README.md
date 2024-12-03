@@ -2,9 +2,7 @@
 
 This game is just getting start as a school project and is totally under construction.
 
-## Objective
-
-## vocabulary
+## objective
 
 ## player
 
