@@ -14,7 +14,6 @@ The player takes on the role of the protagonist, embarking on an adventure to ac
 
 ## assets
 The game includes a variety of assets players can interact with, such as:
-- **Weapons:** Equip and upgrade tools to defend against monsters.
 - **Potions:** Heal or enhance abilities.
 - **Keys/Artifacts:** Unlock new areas or puzzles.
 
