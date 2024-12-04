@@ -262,31 +262,18 @@ int main()
     gameMap.push_back(castle);
 
     // build assets
-    //
-    Asset flashlight("Flashlight", "A flashlight can be very useful, especially in dark places.", 50, false);
-    Asset hammer("Hammer", "A hammer to help defend yourself", 150, true);
-    Asset purplehaze("Purple haze", "A spell that renders opponents helpless.", 250, true);
-    Asset rustynail("Rusty nail", "Infect an opponent with tetanus.", 100, true);
-    Asset drinkingwater("Drinking water", "This may keep you from going thirsty.", 50, false);
+    Asset mountainKey("Mountain Key","A strong, weathered steel key, its surface etched with deep marks of wear and time.
+    \nDespite its aged appearance, it radiates an air of importance and resilience.", 1, false);
+    Asset oceanKey("Ocean Key", "A dilapidated, rusty key coated in fine sand, its once-proud shine now dulled by the corrosive touch of saltwater.
+    \nThough its exterior appears fragile, it feels sturdy enough to serve its purpose.", 1, false);
+    Asset jungleKey("Jungle Key", "A key covered in moss and ancient etchings, as though it has been reclaimed by nature over centuries.
+    \nIts intricate carvings suggest a history steeped in mystery and significance.", 1, false);
+    
 
-    // randomly add assets to nodes
-    int numOfNodes = gameMap.size();
-
-    srand(time(nullptr)); // seed the random number generator
-    int randNode = rand() % numOfNodes;
-    gameMap[randNode].AddAsset(&flashlight);
-
-    randNode = rand() % numOfNodes;
-    gameMap[randNode].AddAsset(&hammer);
-
-    randNode = rand() % numOfNodes;
-    gameMap[randNode].AddAsset(&purplehaze);
-
-    randNode = rand() % numOfNodes;
-    gameMap[randNode].AddAsset(&rustynail);
-
-    randNode = rand() % numOfNodes;
-    gameMap[randNode].AddAsset(&drinkingwater);
+    //add assets to specific nodes
+    gameMap[11].AddAsset(&mountainKey); // Tower Node
+    gameMap[7].AddAsset(&oceanKey);     // Cave Node
+    gameMap[15].AddAsset(&jungleKey);   // Ruins Node
 
     // build monsters
     // randomly add monsters to nodes
