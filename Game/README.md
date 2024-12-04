@@ -5,19 +5,19 @@ This game is just getting start as a school project and is totally under constru
 
 **Note:** This project is currently under development and subject to significant changes as features are added and refined.
 
-## objective
+## Objective
 he main goal of the game is to explore the world, manage assets, and overcome challenges posed by various monsters while progressing through a story-driven adventure. Players must strategize and utilize resources effectively to succeed.
-## player
+## Player
 The player takes on the role of the protagonist, embarking on an adventure to achieve their quest. 
 - Customizable character stats and progression.
 - Decision-based gameplay influencing the outcome of encounters.
 
-## assets
+## Assets
 The game includes a variety of assets players can interact with, such as:
 - **Potions:** Heal or enhance abilities.
 - **Keys/Artifacts:** Unlock new areas or puzzles.
 
-## monsters
+## Monsters
 Encounter diverse monsters with unique traits and difficulty levels, including:
 - **Common Creatures:** Low-level threats found frequently.
 - **Boss Monsters:** High-stakes battles with significant rewards.
