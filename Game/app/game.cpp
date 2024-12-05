@@ -1,3 +1,6 @@
+/// @file game.cpp
+/// @brief This is the main file for the adventure game which initializes the map, assests, items, monsters and all of the game logic. 
+
 #include <iostream>
 
 #include <Node.hpp>
@@ -9,6 +12,9 @@
 using namespace std;
 using namespace chants;
 
+/// @brief This determines if a string is a number
+/// @param str This will be the string that is checked
+/// @return If the string is a number the return is true, if not, false
 bool isNumber(const string &str)
 {
     for (char const &c : str)
@@ -19,6 +25,11 @@ bool isNumber(const string &str)
     return true;
 }
 
+/// @brief This will show the details of a certain node, its name, description, connections, any monsters or items
+/// @param viewPort This is the current node to be displayed
+///
+/// This function will output the a nodes name and description, what paths it connects to, and if there are items or monsters at this node.
+/// If those are present, it will also output the items/monsters name and descriptions. 
 void AtNode(Node &viewPort)
 {
     cout << "\033[2J\033[1;1H"; // clear screen
@@ -47,6 +58,10 @@ void AtNode(Node &viewPort)
     cout << "\n";
 }
 
+/// @brief Finds a node on the map with its name or ID.
+/// @param loc This is a string that represents the identifier of the node, whether it be name or ID
+/// @param gameMap This points to a vector with all of the nodes
+/// @return Returns the ID of the node, but if no node is found, a -1 will be returned
 int FindNode(string loc, vector<Node> *gameMap)
 {
     int intLoc = -1;
@@ -62,6 +77,10 @@ int FindNode(string loc, vector<Node> *gameMap)
     return -1;
 }
 
+/// @brief This function simulates a battle between the player and a monster
+/// @param player This object represents the player
+/// @param monster This object represents the monster
+/// @return Returns the players health after the battle
 int Battle(Player player, Monster monster)
 {
     srand(time(nullptr));
@@ -69,6 +88,12 @@ int Battle(Player player, Monster monster)
     return player.GetHealth();
 }
 
+/// @brief This takes the last word from any given string
+/// @param str This is the string that gets checked
+/// @return  This will return the last word of the string
+///
+/// This function takes out any extra spaces after the string and finds the position of the last space,
+/// it will then take the word following that space. If no space is there, the entire string will be returned.
 std::string getLastWord(const std::string &str)
 {
     // Trim trailing spaces
@@ -92,6 +117,13 @@ std::string getLastWord(const std::string &str)
 //
 // All this game setup will be moved to gamemap and out of the main function
 //
+
+/// @brief This is the function that runs the game
+/// @return 0 will be returned if the game runs successfully
+///
+/// This function creates the map and the locations, each having a description and connections to other locations. 
+/// The game loop allows the player to navigate through the map and interact with any items or monsters. 
+/// If the player decides to exit, the game will stop. 
 int main()
 {
     // AdventureGameMap _gameMap;
@@ -262,18 +294,78 @@ int main()
     gameMap.push_back(castle);
 
     // build assets
-    Asset mountainKey("Mountain Key","A strong, weathered steel key, its surface etched with deep marks of wear and time.
-    \nDespite its aged appearance, it radiates an air of importance and resilience.", 1, false);
-    Asset oceanKey("Ocean Key", "A dilapidated, rusty key coated in fine sand, its once-proud shine now dulled by the corrosive touch of saltwater.
-    \nThough its exterior appears fragile, it feels sturdy enough to serve its purpose.", 1, false);
-    Asset jungleKey("Jungle Key", "A key covered in moss and ancient etchings, as though it has been reclaimed by nature over centuries.
-    \nIts intricate carvings suggest a history steeped in mystery and significance.", 1, false);
+    //
+    Asset flashlight("Flashlight", "A flashlight can be very useful, especially in dark places.", 50, false);
+    Asset hammer("Hammer", "A hammer to help defend yourself", 150, true);
+    Asset purplehaze("Purple haze", "A spell that renders opponents helpless.", 250, true);
+    Asset rustynail("Rusty nail", "Infect an opponent with tetanus.", 100, true);
+    Asset drinkingwater("Drinking water", "This may keep you from going thirsty.", 50, false);
+
+    Asset mountainKey("Mountain Key","A strong, weathered steel key, its surface etched with deep marks of wear and time.\nDespite its aged appearance, it radiates an air of importance and resilience.", 1, false);
+    Asset oceanKey("Ocean Key", "A dilapidated, rusty key coated in fine sand, its once-proud shine now dulled by the corrosive touch of saltwater.\nThough its exterior appears fragile, it feels sturdy enough to serve its purpose.", 1, false);
+    Asset jungleKey("Jungle Key", "A key covered in moss and ancient etchings, as though it has been reclaimed by nature over centuries.\nIts intricate carvings suggest a history steeped in mystery and significance.", 1, false);
     
 
     //add assets to specific nodes
     gameMap[11].AddAsset(&mountainKey); // Tower Node
     gameMap[7].AddAsset(&oceanKey);     // Cave Node
     gameMap[15].AddAsset(&jungleKey);   // Ruins Node
+
+    // randomly add assets to nodes
+    int numOfNodes = gameMap.size();
+
+    srand(time(nullptr)); // seed the random number generator
+    int randNode = rand() % numOfNodes;
+    gameMap[randNode].AddAsset(&flashlight);
+
+    randNode = rand() % numOfNodes;
+    gameMap[randNode].AddAsset(&hammer);
+
+    randNode = rand() % numOfNodes;
+    gameMap[randNode].AddAsset(&purplehaze);
+
+    randNode = rand() % numOfNodes;
+    gameMap[randNode].AddAsset(&rustynail);
+
+    randNode = rand() % numOfNodes;
+    gameMap[randNode].AddAsset(&drinkingwater);
+
+
+// NOTE: this is the part you were talking about getting the 3 keys for the end of the game
+    class Player {
+    std::vector<std::string> inventory; // creates an inventory to track items collected
+    
+public:
+    void AddItemToInventory(const std::string& itemName) {
+        inventory.push_back(itemName);
+    }
+
+    bool HasItem(const std::string& itemName) const {
+        return std::find(inventory.begin(), inventory.end(), itemName) != inventory.end();
+    }
+
+    bool HasAllKeys() const {
+        return HasItem("Mountain Key") && HasItem("Ocean Key") && HasItem("Jungle Key");
+    }
+};
+/// @brief Create an inventory to store the keys for the player.
+/// @param player This object is the player.
+void Node::Interact(Player& player) {
+    for (auto& asset : assets) {
+        if (!asset->isCollected()) {
+            player.AddItemToInventory(asset->getName());
+            asset->setCollected(true); // Mark the item as collected
+        }
+    }
+}
+/// Win condition for the keys, checks at the final node. 
+if (player.HasAllKeys() && currentNode == finalNode) {
+    std::cout << "Congratulations! You've collected all the keys and won the game!" << std::endl;
+} else {
+    std::cout << "Keep exploring! You need all the keys to win!" << std::endl;
+}
+
+
 
     // build monsters
     // randomly add monsters to nodes
